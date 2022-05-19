@@ -1,188 +1,26 @@
-version: 2
+# Use the latest 2.1 version of CircleCI pipeline process engine.
+# See: https://circleci.com/docs/2.0/configuration-reference
+version: 2.1
+
+# Define a job to be invoked later in a workflow.
+# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
+  say-hello:
+    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
+    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
+    docker:
+      - image: cimg/base:stable
+    # Add steps to the job
+    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+    steps:
+      - checkout
+      - run:
+          name: "Say hello"
+          command: "echo Hello, World!"
 
-  no-exception-lucene-and-others-javadoc:
-    docker:
-      - image: &default-image checkstyle/jdk-11-groovy-git-mvn:11.0.13__3.0.9__2.25.1__3.6.3
-    steps:
-      - checkout
-      - run:
-          command: |
-            ./.ci/no-exception-test.sh no-exception-lucene-and-others-javadoc
-  no-exception-cassandra-storm-tapestry-javadoc:
-    docker:
-      - image: *default-image
-    steps:
-      - checkout
-      - run:
-          command: |
-            ./.ci/no-exception-test.sh no-exception-cassandra-storm-tapestry-javadoc
-  no-exception-hadoop-apache-groovy-scouter-javadoc:
-    docker:
-      - image: *default-image
-    steps:
-      - checkout
-      - run:
-          command: |
-            ./.ci/no-exception-test.sh no-exception-hadoop-apache-groovy-scouter-javadoc
-  no-exception-only-javadoc:
-    docker:
-      - image: *default-image
-    steps:
-      - checkout
-      - run:
-          command: |
-            ./.ci/no-exception-test.sh no-exception-only-javadoc
-  no-error-xwiki:
-    docker:
-      - image: *default-image
-    steps:
-      - checkout
-      - run:
-          command: |
-            ./.ci/validation.sh no-error-xwiki
-  no-error-pmd:
-    docker:
-      - image: *default-image
-    steps:
-      - checkout
-      - run:
-          command: |
-            ./.ci/validation.sh no-error-pmd
-  no-exception-struts:
-    docker:
-      - image: *default-image
-    steps:
-      - checkout
-      - run:
-          command: |
-            ./.ci/validation.sh no-exception-struts
-  no-exception-checkstyle-sevntu:
-    docker:
-      - image: *default-image
-    steps:
-      - checkout
-      - run:
-          command: |
-            ./.ci/validation.sh no-exception-checkstyle-sevntu
-  no-exception-checkstyle-sevntu-javadoc:
-    docker:
-      - image: *default-image
-    steps:
-      - checkout
-      - run:
-          command: |
-            ./.ci/validation.sh no-exception-checkstyle-sevntu-javadoc
-  no-exception-guava:
-    docker:
-      - image: *default-image
-    steps:
-      - checkout
-      - run:
-          command: |
-            ./.ci/validation.sh no-exception-guava
-  no-exception-hibernate-orm:
-    docker:
-      - image: *default-image
-    steps:
-      - checkout
-      - run:
-          command: |
-            ./.ci/validation.sh no-exception-hibernate-orm
-  no-exception-spotbugs:
-    docker:
-      - image: *default-image
-    steps:
-      - checkout
-      - run:
-          command: |
-            ./.ci/validation.sh no-exception-spotbugs
-  no-exception-spoon:
-    docker:
-      - image: *default-image
-    steps:
-      - checkout
-      - run:
-          command: |
-            ./.ci/validation.sh no-exception-spoon
-  no-exception-spring-framework:
-    docker:
-      - image: *default-image
-    steps:
-      - checkout
-      - run:
-          command: |
-            ./.ci/validation.sh no-exception-spring-framework
-  no-exception-hbase:
-    docker:
-      - image: *default-image
-    steps:
-      - checkout
-      - run:
-          command: |
-            ./.ci/validation.sh no-exception-hbase
-  no-exception-Pmd-elasticsearch-lombok-ast:
-    docker:
-      - image: *default-image
-    steps:
-      - checkout
-      - run:
-          command: |
-            ./.ci/validation.sh no-exception-Pmd-elasticsearch-lombok-ast
-  no-exception-alot-of-projects:
-    docker:
-      - image: *default-image
-    steps:
-      - checkout
-      - run:
-          command: |
-            ./.ci/validation.sh no-exception-alot-of-projects
-  no-warning-imports-guava:
-    docker:
-      - image: *default-image
-    steps:
-      - checkout
-      - run:
-          command: |
-            ./.ci/validation.sh no-warning-imports-guava
-  no-warning-imports-java-design-patterns:
-    docker:
-      - image: *default-image
-    steps:
-      - checkout
-      - run:
-          command: |
-            ./.ci/validation.sh no-warning-imports-java-design-patterns
-  sonarqube:
-    docker:
-      - image: *default-image
-    steps:
-      - checkout
-      - run:
-          command: |
-            ./.ci/validation.sh sonarqube
-
+# Invoke jobs via workflows
+# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  version: 2
-  no-exception-tests:
+  say-hello-workflow:
     jobs:
-      - no-exception-lucene-and-others-javadoc
-      - no-exception-cassandra-storm-tapestry-javadoc
-      - no-exception-hadoop-apache-groovy-scouter-javadoc
-      - no-exception-only-javadoc
-      - no-error-xwiki
-      - no-error-pmd
-      - no-exception-struts
-      - no-exception-checkstyle-sevntu
-      - no-exception-checkstyle-sevntu-javadoc
-      - no-exception-guava
-      - no-exception-hibernate-orm
-      - no-exception-spotbugs
-      - no-exception-spoon
-      - no-exception-spring-framework
-      - no-exception-hbase
-      - no-exception-Pmd-elasticsearch-lombok-ast
-      - no-exception-alot-of-projects
-      - no-warning-imports-guava
-      - no-warning-imports-java-design-patterns
-      - sonarqube
+      - say-hello
